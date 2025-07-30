@@ -1,4 +1,5 @@
 
+const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001';
 import React, { useEffect, useState } from "react";
 // Utilidad simple para cookies
 function setCookie(name: string, value: string, days = 365) {
@@ -60,7 +61,7 @@ export function PersonList() {
 
   const fetchAllPersonData = async () => {
     try {
-      const response = await fetch('http://localhost:3001/person-data');
+      const response = await fetch(`${apiUrl}/person-data`);
       if (response.ok) {
         const data = await response.json();
         setAllPersonData(data);
@@ -155,7 +156,7 @@ export function PersonList() {
   // Fetch dynamic data types for columns
   const fetchDataTypes = async () => {
     try {
-      const response = await fetch('http://localhost:3001/data-type');
+      const response = await fetch(`${apiUrl}/data-type`);
       if (response.ok) {
         const data = await response.json();
         setDataTypes(data);
@@ -167,7 +168,7 @@ export function PersonList() {
 
   const fetchPeople = () => {
     setLoading(true);
-    fetch("http://localhost:3001/person")
+    fetch(`${apiUrl}/person`)
       .then((res) => {
         if (!res.ok) throw new Error("Error al cargar personas");
         return res.json();
@@ -287,7 +288,8 @@ export function PersonList() {
         notes: formPerson.notes || undefined,
       };
       
-              fetch(`http://localhost:3001/person/${editingPerson.id}`, {
+              const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+              fetch(`${apiUrl}/person/${editingPerson.id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(updateData),
@@ -320,7 +322,8 @@ export function PersonList() {
         notes: formPerson.notes || undefined,
       };
       
-              fetch("http://localhost:3001/person", {
+              const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+              fetch(`${apiUrl}/person`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(createData),
@@ -370,22 +373,22 @@ export function PersonList() {
   const confirmDelete = () => {
     if (deleteTarget === 'selected') {
       // Delete selected people
-    Promise.all(
-      Array.from(selectedIds).map((id) =>
-          fetch(`http://localhost:3001/person/${id}`, { method: "DELETE" })
+      Promise.all(
+        Array.from(selectedIds).map((id) =>
+          fetch(`${apiUrl}/person/${id}`, { method: "DELETE" })
+        )
       )
-    )
-      .then(() => {
-        toast.success("Personas eliminadas con éxito");
-        fetchPeople();
-        setSelectedIds(new Set());
-        setSelectAll(false);
+        .then(() => {
+          toast.success("Personas eliminadas con éxito");
+          fetchPeople();
+          setSelectedIds(new Set());
+          setSelectAll(false);
           closeDeleteModal();
-      })
+        })
         .catch(() => toast.error("Error al eliminar algunas personas"));
     } else if (deleteTarget) {
       // Delete single person
-              fetch(`http://localhost:3001/person/${deleteTarget}`, {
+      fetch(`${apiUrl}/person/${deleteTarget}`, {
         method: "DELETE",
       })
         .then((res) => {

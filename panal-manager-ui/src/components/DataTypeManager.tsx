@@ -15,7 +15,8 @@ export const DataTypeManager: React.FC = () => {
   const handleDelete = async (id: number) => {
     if (window.confirm('¿Estás seguro de que quieres eliminar este tipo de dato?')) {
       try {
-        const response = await fetch(`http://localhost:3001/data-type/${id}`, {
+        const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+        const response = await fetch(`${apiUrl}/data-type/${id}`, {
           method: 'DELETE',
         });
         if (response.ok) {
@@ -38,7 +39,8 @@ export const DataTypeManager: React.FC = () => {
 
   const fetchDataTypes = async () => {
     try {
-      const response = await fetch('http://localhost:3001/data-type');
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+      const response = await fetch(`${apiUrl}/data-type`);
       if (response.ok) {
         const data = await response.json();
         setDataTypes(data);

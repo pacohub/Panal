@@ -112,9 +112,10 @@ export const PersonDataManager: React.FC<PersonDataManagerProps> = ({
     fetchDataTypes();
   }, [personId]);
 
+  const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001';
   const fetchPersonData = async () => {
     try {
-      const response = await fetch(`http://localhost:3001/person-data/person/${personId}`);
+      const response = await fetch(`${apiUrl}/person-data/person/${personId}`);
       if (response.ok) {
         let data = await response.json();
         // Compatibilidad: si fileName no existe, ponerlo en blanco
@@ -133,7 +134,7 @@ export const PersonDataManager: React.FC<PersonDataManagerProps> = ({
 
   const fetchDataTypes = async () => {
     try {
-      const response = await fetch('http://localhost:3001/data-type');
+      const response = await fetch(`${apiUrl}/data-type`);
       if (response.ok) {
         const data = await response.json();
         setDataTypes(data);
@@ -195,8 +196,8 @@ export const PersonDataManager: React.FC<PersonDataManagerProps> = ({
 
     try {
       const url = editingData 
-        ? `http://localhost:3001/person-data/${editingData.id}`
-        : 'http://localhost:3001/person-data';
+        ? `${apiUrl}/person-data/${editingData.id}`
+        : `${apiUrl}/person-data`;
       const method = editingData ? 'PATCH' : 'POST';
       // Solo enviar fileName si es image o file
       const selectedType = dataTypes.find(dt => dt.id === Number(formData.dataTypeId))?.type;
@@ -247,7 +248,7 @@ export const PersonDataManager: React.FC<PersonDataManagerProps> = ({
   const handleDelete = async (id: number) => {
     if (window.confirm('¿Estás seguro de que quieres eliminar este dato?')) {
       try {
-        const response = await fetch(`http://localhost:3001/person-data/${id}`, {
+        const response = await fetch(`${apiUrl}/person-data/${id}`, {
           method: 'DELETE',
         });
 
@@ -299,8 +300,8 @@ export const PersonDataManager: React.FC<PersonDataManagerProps> = ({
     
     try {
       const url = editingDataType 
-        ? `http://localhost:3001/data-type/${editingDataType.id}`
-        : 'http://localhost:3001/data-type';
+        ? `${apiUrl}/data-type/${editingDataType.id}`
+        : `${apiUrl}/data-type`;
       
       const method = editingDataType ? 'PATCH' : 'POST';
       
