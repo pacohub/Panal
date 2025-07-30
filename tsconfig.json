@@ -1,6 +1,9 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
+    "module": "CommonJS",                
+    "jsx": "react-jsx",       
+    "moduleResolution": "node", 
+    "esModuleInterop": true,        
     "declaration": true,
     "removeComments": true,
     "emitDecoratorMetadata": true,
