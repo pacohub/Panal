@@ -1,3 +1,0 @@
-{
-  "build": "npm install --prefix ./ && npm run build --prefix ./"
-}
